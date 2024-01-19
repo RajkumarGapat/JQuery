@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+  <style>
+    #users-table,
+    td,
+    tr,
+    th {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 20px 20px 20px 20px;
+      margin: auto;
+    }
+    body {
+      background-color: rgb(255, 196, 245);
+      color: black;
+    }
+    li {
+      display: inline;
+      padding: 20px;
+    }
+    #logout {
+      float: right;
+    }
+    #home-div {
+      margin-right: 60px;
+    }
+  </style>
+
+  <body>
+    <h2>Live score using Ajax and JSON from a live sport</h2>
+    <button onclick="getUsers()">Show Data</button>
+    <table id="users-table">
+      <thread>
+        <tr>
+          <th>id</th>
+          <th>name</th>
+          <th>status</th>
+          <th>venue</th>
+          <th>date</th>
+          <th>dateTimeGMT</th>
+          <th>teams</th>
+        </tr>
+      </thread>
+      <tbody id="user-table-body"></tbody>
+    </table>
+
+    <script>
+      async function getUsers() {
+        try {
+          const resp = await fetch(
+            "https://api.cricapi.com/v1/currentMatches?apikey=6973db55-262c-4769-849c-b7ff02cc4803&offset=0"
+          );
+          const data = await resp.json();
+          console.log(data);
+
+          let tab = "";
+          for (let p of data.data) {
+            tab += `<tr>
+                         <td>${p.id}</td>
+                         <td>${p.name}</td>
+                         <td>${p.status}</td>
+                         <td>${p.venue}</td>
+                         <td>${p.date}</td>
+                         <td>${p.dateTimeGMT}</td>
+                         <td>${p.teams}</td>
+                         
+                         </tr>`;
+          }
+          document.getElementById("user-table-body").innerHTML = tab;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    </script>
+  </body>
+</html>
